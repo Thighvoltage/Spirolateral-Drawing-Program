@@ -41,8 +41,8 @@ class GUI:
                                   + "list", command = self.save)
         self.button_load = Button(self.frame_menu, text = "Load spirolateral "
                                   + "list", command = self.load)
-        self.button_quit = Button(self.frame_menu, text = "Quit",
-                                  command = self.quit)
+        self.button_info = Button(self.frame_menu, text = "Information",
+                                  command = self.display_information)
 
         self.label_menu.grid(row = 0, column = 0, rowspan = 2, padx = PAD_LX)
 
@@ -56,11 +56,32 @@ class GUI:
                               pady = PAD_BY, sticky = EW)
         self.button_load.grid(row = 0, column = 3, padx = PAD_BX,
                               pady = PAD_BY, sticky = EW)
-        self.button_quit.grid(row = 1, column = 3, padx = PAD_BX,
+        self.button_info.grid(row = 1, column = 3, padx = PAD_BX,
                               pady = PAD_BY, sticky = EW)
 
         self.frame_secondary = Frame(master)
         self.frame_secondary.grid(row = 1, column = 1, sticky = NW)
+
+        self.label_prompt1 = Label(self.frame_secondary, pady = PAD_LY)
+        self.label_prompt2 = Label(self.frame_secondary, pady = PAD_LY)
+        self.label_prompt3 = Label(self.frame_secondary, pady = PAD_LY)
+
+        self.label_response1 = Label(self.frame_secondary, padx = PAD_LX)
+        self.label_response2 = Label(self.frame_secondary, padx = PAD_LX)
+        self.label_response3 = Label(self.frame_secondary, padx = PAD_LX)
+
+        self.button_enter = Button(self.frame_secondary, text = "Enter",
+                                   width = WIDTH)
+        self.button_yes = Button(self.frame_secondary, text = "Yes",
+                                 width = WIDTH, command = root.destroy)
+        self.button_draw2 = Button(self.frame_secondary, text = "Draw",
+                                   width = WIDTH, command = self.start_draw)
+        self.button_stop = Button(self.frame_secondary, text = "Stop",
+                                  width = WIDTH, command = self.stop_draw)
+
+        self.entry1 = Entry(self.frame_secondary)
+        self.entry2 = Entry(self.frame_secondary)
+        self.entry3 = Entry(self.frame_secondary)
 
         self.frame_spiro = Frame(master)
         self.frame_spiro.grid(row = 1, column = 0, rowspan = 2, sticky = NW)
@@ -72,6 +93,13 @@ class GUI:
         self.label_spiros = Label(self.frame_spiro, justify = LEFT)
         self.label_spiros.grid(row = 1, column = 0, padx = PAD_LX,
                                sticky = NW)
+
+        self.frame_draw = Frame(master)
+
+        self.canvas = Canvas(self.frame_draw, width = 500, height = 500)
+        self.canvas.grid(row = 0, column = 0)
+
+        self.turtle = turtle.RawTurtle(self.canvas)
 
     def spiro_add(self):
         print(1)
@@ -94,7 +122,7 @@ class GUI:
     def load(self):
         print(7)
 
-    def quit(self):
+    def display_information(self):
         print(8)
 
     def spiro_print(self):
