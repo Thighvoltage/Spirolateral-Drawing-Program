@@ -194,10 +194,30 @@ class GUI:
         print(8)
 
     def spiro_print(self):
-        print(9)
+        """Creates a label with all of the spirolaterals each time a
+        spirolateral is added or removed.
+        """
+        text = ""
+        # Adds to the text variable in a for loop so every spirolateral is
+        # added no matter how many there are, and any spirolateral that's been
+        # removed isn't added
+        for index in range(len(spiros)):
+            text += "{}) {} - {} segments and {}°\n".format(index + 1,
+                    spiros[index].name, spiros[index].segment,
+                    spiros[index].angle)
+        self.label_spiros.configure(text = text)
 
     def clear(self):
-        print(10)
+        """Clears the secondary frame, all entries, response labels
+        """
+        for widget in self.frame_secondary.winfo_children():
+            widget.grid_forget()
+
+        self.frame_draw.grid_forget()
+
+        self.label_response1.configure(text = "")
+        self.label_response2.configure(text = "")
+        self.label_response3.configure(text = "")
 
     def option_stop(self, num, text):
         print(11)
