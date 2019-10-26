@@ -212,10 +212,35 @@ class GUI:
         print(5)
 
     def save(self):
-        print(6)
+        if self.option_stop(0, "There are no spirolaterals to save.") != -1:
+
+            # Pickles all spirolaterals on the program to a save file
+            pickle_out = open("Spirolateral Program Save File", "wb")
+            pickle.dump(spiros, pickle_out)
+            pickle_out.close()
+
+            self.label_prompt1.configure(text = "Saved.")
+            self.label_prompt1.grid(row = 0, column = 0)
 
     def load(self):
-        print(7)
+        global spiros
+        self.clear()
+        # Try and except statements stop the program from crashing if there's
+        # no save file
+        try:
+            # Loads safe file and changes the spiro list to what was saved
+            pickle_in = open("Spirolateral Program Save File", "rb")
+            spiros = pickle.load(pickle_in)
+            self.spiro_print()
+
+            self.label_prompt1.configure(text = "Loaded.")
+            self.label_prompt1.grid(row = 0, column = 0)
+
+        except:
+            self.label_prompt1.configure(text = "There's no save file to load "
+                                         + "from.\n Or the save file's "
+                                         + "contents are corrupt.")
+            self.label_prompt1.grid(row = 0, column = 0)
 
     def display_information(self):
         print(8)
