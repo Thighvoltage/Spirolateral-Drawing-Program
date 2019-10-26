@@ -173,7 +173,34 @@ class GUI:
             self.label_response3.configure(text = "")
 
     def spiro_remove(self):
-        print(2)
+        if self.option_stop(0, "There are no spirolaterals to remove.") != -1:
+
+            self.label_prompt1.configure(text = "Integer:")
+            self.label_prompt1.grid(row = 0, column = 0, sticky = W)
+
+            self.label_response1.grid(row = 0, column = 2, sticky = W)
+
+            self.entry1.grid(row = 0, column = 1)
+
+            self.button_enter.configure(command = self.check_remove)
+            self.button_enter.grid(row = 1, column = 0)
+
+    def check_remove(self):
+        """Checks that the entry is valid then removes the spirolateral
+        if they are
+        """
+        choice = check_num(self.entry1, self.label_response1, "That integer "
+                           + "doesn't correspond to anything.", MIN_CHOICE,
+                           len(spiros), int)
+
+        if choice != -1:
+            del spiros[choice - 1]
+
+            self.spiro_print()
+            self.clear()
+
+            self.label_prompt1.configure(text = "Spirolateral removed.")
+            self.label_prompt1.grid(row = 0, column = 0)
 
     def spiro_draw(self):
         print(3)
@@ -220,7 +247,14 @@ class GUI:
         self.label_response3.configure(text = "")
 
     def option_stop(self, num, text):
-        print(11)
+        """Runs at the start functions to stop them from running their code
+        if their requirements aren't met
+        """
+        self.clear()
+        if len(spiros) == num:
+            self.label_prompt1.configure(text = text)
+            self.label_prompt1.grid(row = 0, column = 0)
+            return -1
 
 
 def check_num(entry, label, response, lower_limit, upper_limit, integer):
