@@ -23,6 +23,7 @@ class GUI:
         PAD_BX = 3
         PAD_BY = 3
         WIDTH = 10
+        WR_LENGTH = 500
 
         self.master = master
         self.frame_menu = Frame(master, bg = COLOUR_BG)
@@ -71,6 +72,9 @@ class GUI:
         self.label_response1 = Label(self.frame_secondary, padx = PAD_LX)
         self.label_response2 = Label(self.frame_secondary, padx = PAD_LX)
         self.label_response3 = Label(self.frame_secondary, padx = PAD_LX)
+
+        self.label_define = Label(self.frame_secondary, wraplength = WR_LENGTH,
+                                  justify = LEFT, padx = PAD_LX, pady = PAD_LY)
 
         self.button_enter = Button(self.frame_secondary, text = "Enter",
                                    width = WIDTH)
@@ -229,10 +233,10 @@ class GUI:
             self.label_response1.configure(text = "")
 
         if choice != -1:
-            # Resets turtle, increases its speed, and changes variable to let
-            # it draw
+            # Resets turtle, sets its speed, and changes variable to let it
+            # draw
             self.turtle.reset()
-            self.turtle.speed(0)
+            self.turtle.speed(3)
             self.in_motion = True
             xpos, ypos = -1, -1
 
@@ -295,7 +299,9 @@ class GUI:
             self.label_prompt1.grid(row = 0, column = 0)
 
     def display_information(self):
-        print(8)
+        self.clear()
+        self.label_define.configure(text = SPIRO_DEFINE)
+        self.label_define.grid(row = 0, column = 0)
 
     def spiro_print(self):
         """Creates a label with all of the spirolaterals each time a
@@ -322,7 +328,7 @@ class GUI:
         self.label_response1.configure(text = "")
         self.label_response2.configure(text = "")
         self.label_response3.configure(text = "")
-        
+
         self.entry1.delete(0, END)
         self.entry2.delete(0, END)
         self.entry3.delete(0, END)
@@ -366,6 +372,13 @@ spiros = []
 # Require an input less than 1.
 MAX_SPIRO = 30
 MIN_CHOICE = 1
+
+SPIRO_DEFINE = ("Spirolaterals are made by drawing lines (or segments) that in"
++"crease in length by a constant amount, and turning by a fixed angle after ea"
++"ch segment. After a set number of segments are drawn, the end of the cycle i"
++"s reached, and the segment length resets. This continues until the spirolate"
++"ral reaches the starting position at the end of a cycle (but this does not a"
++"lways happen).")
 
 def main():
     """Runs the GUI and assigns it a name
