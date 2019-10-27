@@ -1,6 +1,7 @@
 from tkinter import *
 import turtle
 import pickle
+import webbrowser
 
 class Spirolateral():
     def __init__(self, name, segment, angle):
@@ -43,7 +44,7 @@ class GUI:
         self.button_load = Button(self.frame_menu, text = "Load spirolateral "
                                   + "list", command = self.load)
         self.button_info = Button(self.frame_menu, text = "Information",
-                                  command = self.display_information)
+                                  command = self.display_info)
 
         self.label_menu.grid(row = 0, column = 0, rowspan = 2, padx = PAD_LX)
 
@@ -74,7 +75,17 @@ class GUI:
         self.label_response3 = Label(self.frame_secondary, padx = PAD_LX)
 
         self.label_define = Label(self.frame_secondary, wraplength = WR_LENGTH,
-                                  justify = LEFT, padx = PAD_LX, pady = PAD_LY)
+                                  justify = LEFT, padx = PAD_LX, pady = PAD_LY,
+                                  text = SPIRO_DEFINE)
+        self.label_code = Label(self.frame_secondary, wraplength = WR_LENGTH,
+                                  justify = LEFT, padx = PAD_LX, pady = PAD_LY,
+                                  text = CODE, cursor = "hand2")
+        self.label_keybinds = Label(self.frame_secondary, wraplength =
+                                    WR_LENGTH, justify = LEFT, padx = PAD_LX,
+                                    pady = PAD_LY, text = KEYBINDS)
+        self.label_code.bind("<Button-1>", lambda event: webbrowser.open_new(
+        "https://github.com/Thighvoltage/Spirolateral-Drawing-Program"
+        ))
 
         self.button_enter = Button(self.frame_secondary, text = "Enter",
                                    width = WIDTH)
@@ -107,6 +118,13 @@ class GUI:
 
         self.turtle = turtle.RawTurtle(self.canvas)
 
+        self.master.bind("<Control-q>", lambda event: self.spiro_add())
+        self.master.bind("<Control-a>", lambda event: self.spiro_remove())
+        self.master.bind("<Control-s>", lambda event: self.spiro_draw())
+        self.master.bind("<Control-w>", lambda event: self.save())
+        self.master.bind("<Control-e>", lambda event: self.load())
+        self.master.bind("<Control-d>", lambda event: self.display_info())
+
     def spiro_add(self):
         # Stops function from running when there's the max amount of spiros
         # by putting the rest of the function indented in the if statement
@@ -134,6 +152,10 @@ class GUI:
             self.button_enter.configure(command = self.check_add)
 
             self.button_enter.grid(row = 3, column = 0)
+
+            # Binds the check_add() function to the enter key, so a spiro can
+            # be added without a mouse
+            self.master.bind("<Return>", lambda event: self.check_add())
 
     def check_add(self):
         """Checks that entries are valid then adds a spirolateral if they are
@@ -191,6 +213,8 @@ class GUI:
             self.button_enter.configure(command = self.check_remove)
             self.button_enter.grid(row = 1, column = 0)
 
+            self.master.bind("<Return>", lambda event: self.check_remove())
+
     def check_remove(self):
         """Checks that the entry is valid then removes the spirolateral
         if they are
@@ -221,6 +245,10 @@ class GUI:
 
             self.button_draw2.grid(row = 1, column = 0)
             self.button_stop.grid(row = 1, column = 1)
+
+            self.master.bind("<Return>", lambda event: self.start_draw())
+            self.master.bind("<Shift_L>", lambda event: self.stop_draw())
+            self.master.bind("<Shift_R>", lambda event: self.stop_draw())
 
     def start_draw(self):
         """Checks that the entered integer is valid and draws the chosen spiros
@@ -298,10 +326,12 @@ class GUI:
                                          + "contents are corrupt.")
             self.label_prompt1.grid(row = 0, column = 0)
 
-    def display_information(self):
+    def display_info(self):
         self.clear()
-        self.label_define.configure(text = SPIRO_DEFINE)
-        self.label_define.grid(row = 0, column = 0)
+
+        self.label_define.grid(row = 0, column = 0, sticky = W)
+        self.label_code.grid(row = 1, column = 0, sticky = W)
+        self.label_keybinds.grid(row = 2, column = 0, sticky = W)
 
     def spiro_print(self):
         """Creates a label with all of the spirolaterals each time a
@@ -372,13 +402,20 @@ spiros = []
 # Require an input less than 1.
 MAX_SPIRO = 30
 MIN_CHOICE = 1
-
 SPIRO_DEFINE = ("Spirolaterals are made by drawing lines (or segments) that in"
 +"crease in length by a constant amount, and turning by a fixed angle after ea"
 +"ch segment. After a set number of segments are drawn, the end of the cycle i"
 +"s reached, and the segment length resets. This continues until the spirolate"
 +"ral reaches the starting position at the end of a cycle (but this does not a"
 +"lways happen).")
+CODE = ("If you're curious, you can click here to see the code for this "
++"program,\nor you can right click the program file and select 'Edit with "
++"IDLE'")
+KEYBINDS = ("Key Binds\nEnter and Draw buttons: Enter\nAdd a Spirolateral: "
++"Ctrl + Q\nRemove a Spirolateral: Ctrl + A\nDraw a Spirolateral: Ctrl + S\n"
++"Save a Spirolateral: Ctrl + W\nLoad a Spirolateral: Ctrl + E\nInformation: "
++"Ctrl + D")
+
 
 def main():
     """Runs the GUI and assigns it a name
