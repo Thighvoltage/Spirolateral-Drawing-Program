@@ -62,6 +62,8 @@ class GUI:
         self.frame_secondary = Frame(master)
         self.frame_secondary.grid(row = 1, column = 1, sticky = NW)
 
+        self.master.grid_columnconfigure(1, weight = 1)
+
         self.label_prompt1 = Label(self.frame_secondary, pady = PAD_LY)
         self.label_prompt2 = Label(self.frame_secondary, pady = PAD_LY)
         self.label_prompt3 = Label(self.frame_secondary, pady = PAD_LY)
@@ -216,7 +218,6 @@ class GUI:
             self.button_draw2.grid(row = 1, column = 0)
             self.button_stop.grid(row = 1, column = 1)
 
-
     def start_draw(self):
         """Checks that the entered integer is valid and draws the chosen spiros
         """
@@ -321,6 +322,10 @@ class GUI:
         self.label_response1.configure(text = "")
         self.label_response2.configure(text = "")
         self.label_response3.configure(text = "")
+        
+        self.entry1.delete(0, END)
+        self.entry2.delete(0, END)
+        self.entry3.delete(0, END)
 
     def option_stop(self, num, text):
         """Runs at the start functions to stop them from running their code
