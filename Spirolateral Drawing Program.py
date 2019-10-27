@@ -203,13 +203,64 @@ class GUI:
             self.label_prompt1.grid(row = 0, column = 0)
 
     def spiro_draw(self):
-        print(3)
+        if self.option_stop(0, "There are no spirolaterals to draw.") != -1:
+
+            self.frame_draw.grid(row = 2, column = 1, sticky = NW)
+
+            self.label_prompt1.configure(text = "Integer:")
+            self.label_prompt1.grid(row = 0, column = 0, sticky = W)
+            self.label_response1.grid(row = 0, column = 2)
+
+            self.entry1.grid(row = 0, column = 1)
+
+            self.button_draw2.grid(row = 1, column = 0)
+            self.button_stop.grid(row = 1, column = 1)
+
 
     def start_draw(self):
-        print(4)
+        """Checks that the entered integer is valid and draws the chosen spiros
+        """
+        choice = check_num(self.entry1, self.label_response1, "That integer "
+                           + "doesn't correspond to anything.", MIN_CHOICE,
+                           len(spiros), int)
+
+        if choice != -1 and self.label_response1.cget("text") != "":
+            self.label_response1.configure(text = "")
+
+        if choice != -1:
+            # Resets turtle, increases its speed, and changes variable to let
+            # it draw
+            self.turtle.reset()
+            self.turtle.speed(0)
+            self.in_motion = True
+            xpos, ypos = -1, -1
+
+            # Continues drawing spirolateral until the turtle returns to
+            # starting position
+            while round(xpos) != 0 or round(ypos) != 0:
+                x = 20
+                # Draws the specified amount of segments per cycle before
+                # resetting length
+                for segment in range(spiros[choice - 1].segment):
+                        # Rotates turtle by chosen angle before each segment
+                        self.turtle.rt(-(180 - spiros[choice - 1].angle))
+                        self.turtle.fd(x)
+                        # Increases segment length after each segment
+                        x += 20
+                        # Stops drawing if in_motion is set to false
+                        if self.in_motion is False:
+                            return
+
+                xpos, ypos = self.turtle.pos()
+            self.stop_draw()
 
     def stop_draw(self):
-        print(5)
+        """Changes variable to stop the turtle from moving, lifts the pen up
+        and hides the turtle
+        """
+        self.in_motion = False
+        self.turtle.pu()
+        self.turtle.ht()
 
     def save(self):
         if self.option_stop(0, "There are no spirolaterals to save.") != -1:
