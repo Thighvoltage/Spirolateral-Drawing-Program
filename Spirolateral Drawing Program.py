@@ -3,6 +3,7 @@ import turtle
 import pickle
 import webbrowser
 
+
 class Spirolateral():
     def __init__(self, name, segment, angle):
         """A class has been made for spirolaterals so they can be easily be
@@ -15,7 +16,8 @@ class Spirolateral():
 
 class GUI:
     def __init__(self, master):
-        """Defines all GUI frames, widgets, turtle, and constants.
+        """Defines all GUI frames, widgets, turtle, constants, and keyboard
+        shortcuts.
         """
 
         COLOUR_BG = "pale green"
@@ -100,6 +102,10 @@ class GUI:
         self.entry2 = Entry(self.frame_secondary)
         self.entry3 = Entry(self.frame_secondary)
 
+        self.slider = Scale(self.frame_secondary, orient = HORIZONTAL, label =
+                            "Speed", command = self.speed, from_ = 1, to_ = 10)
+        self.slider.set(5)
+
         self.frame_spiro = Frame(master)
         self.frame_spiro.grid(row = 1, column = 0, rowspan = 2, sticky = NW)
 
@@ -124,6 +130,10 @@ class GUI:
         self.master.bind("<Control-w>", lambda event: self.save())
         self.master.bind("<Control-e>", lambda event: self.load())
         self.master.bind("<Control-d>", lambda event: self.display_info())
+        self.master.bind("<Left>", lambda event:
+                         self.slider.set(self.slider.get() - 1))
+        self.master.bind("<Right>", lambda event:
+                         self.slider.set(self.slider.get() + 1))
 
     def spiro_add(self):
         # Stops function from running when there's the max amount of spiros
@@ -246,6 +256,8 @@ class GUI:
             self.button_draw2.grid(row = 1, column = 0)
             self.button_stop.grid(row = 1, column = 1)
 
+            self.slider.grid(row = 0, column = 3, rowspan = 2)
+
             self.master.bind("<Return>", lambda event: self.start_draw())
             self.master.bind("<Shift_L>", lambda event: self.stop_draw())
             self.master.bind("<Shift_R>", lambda event: self.stop_draw())
@@ -264,7 +276,7 @@ class GUI:
             # Resets turtle, sets its speed, and changes variable to let it
             # draw
             self.turtle.reset()
-            self.turtle.speed(3)
+            self.speed(self.slider.get())
             self.in_motion = True
             xpos, ypos = -1, -1
 
@@ -294,6 +306,16 @@ class GUI:
         self.in_motion = False
         self.turtle.pu()
         self.turtle.ht()
+
+    def speed(self, value):
+        '''Adjusts speed of turtle based on position of slider.
+        '''
+        # 0 is the highest turtle speed, so when the slider is set to the max
+        # value, the turtle speed is set to 0
+        if int(value) == 10:
+            self.turtle.speed(0)
+        else:
+            self.turtle.speed(int(value))
 
     def save(self):
         if self.option_stop(0, "There are no spirolaterals to save.") != -1:
@@ -403,18 +425,18 @@ spiros = []
 MAX_SPIRO = 30
 MIN_CHOICE = 1
 SPIRO_DEFINE = ("Spirolaterals are made by drawing lines (or segments) that in"
-+"crease in length by a constant amount, and turning by a fixed angle after ea"
-+"ch segment. After a set number of segments are drawn, the end of the cycle i"
-+"s reached, and the segment length resets. This continues until the spirolate"
-+"ral reaches the starting position at the end of a cycle (but this does not a"
-+"lways happen).")
++ "crease in length by a constant amount, and turning by a fixed angle after e"
++ "ach segment. After a set number of segments are drawn, the end of the cycle"
++ " is reached, and the segment length resets. This continues until the spirol"
++ "ateral reaches the starting position at the end of a cycle (but this does"
++ " not always happen).")
 CODE = ("If you're curious, you can click here to see the code for this "
-+"program,\nor you can right click the program file and select 'Edit with "
-+"IDLE'")
++ "program,\nor you can right click the program file and select 'Edit with "
++ "IDLE'")
 KEYBINDS = ("Key Binds\nEnter and Draw buttons: Enter\nAdd a Spirolateral: "
-+"Ctrl + Q\nRemove a Spirolateral: Ctrl + A\nDraw a Spirolateral: Ctrl + S\n"
-+"Save a Spirolateral: Ctrl + W\nLoad a Spirolateral: Ctrl + E\nInformation: "
-+"Ctrl + D")
++ "Ctrl + Q\nRemove a Spirolateral: Ctrl + A\nDraw a Spirolateral: Ctrl + S\n"
++ "Save a Spirolateral: Ctrl + W\nLoad a Spirolateral: Ctrl + E\nInformation: "
++ "Ctrl + D\nAdjust Speed Slider: Left and Right Arrow Keys")
 
 
 def main():
