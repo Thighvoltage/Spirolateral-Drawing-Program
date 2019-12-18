@@ -104,6 +104,7 @@ class GUI:
 
         self.slider = Scale(self.frame_secondary, orient = HORIZONTAL, label =
                             "Speed", command = self.speed, from_ = 1, to_ = 10)
+        # Default slider setting
         self.slider.set(5)
 
         self.frame_spiro = Frame(master)
@@ -311,7 +312,8 @@ class GUI:
         '''Adjusts speed of turtle based on position of slider.
         '''
         # 0 is the highest turtle speed, so when the slider is set to the max
-        # value, the turtle speed is set to 0
+        # value, the turtle speed is set to 0, otherwise the turtle is set to
+        # the speed value of the slider
         if int(value) == 10:
             self.turtle.speed(0)
         else:
