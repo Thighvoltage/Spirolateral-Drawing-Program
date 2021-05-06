@@ -1,2 +1,2 @@
 # Spirolateral-Drawing-Program
-This is a educational program revolved around drawing spirolaterals.
+This is an educational program revolved around drawing spirolaterals.
